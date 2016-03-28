@@ -28,7 +28,7 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
             final float x = event.values[0];
             final float y = event.values[1];
 
-            final float angle = (float) -Math.toDegrees(Math.atan2(y, x) - Math.atan2(1.0, 0.0));
+            final float angle = (float) -Math.toDegrees(Math.atan2(y, x) - Math.atan2(1.0, 0.0)) + mBaseRotation;
             mView.setRotation(angle);
         }
 
@@ -39,6 +39,8 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
     };
 
     private final SensorManager mSensorManager;
+
+    private float mBaseRotation;
     private View mView;
 
     public GravityBehavior(Context context) {
@@ -57,7 +59,7 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
         return super.onLayoutChild(parent, child, layoutDirection);
     }
 
-    public boolean startRotating() {
+    public boolean start() {
         final Sensor sensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         if (sensor == null) {
             return false;
@@ -67,7 +69,11 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
         return true;
     }
 
-    public void stopRotating() {
+    public void stop() {
         mSensorManager.unregisterListener(mListener);
+    }
+
+    public void setBaseRotation(float baseRotation) {
+        mBaseRotation = baseRotation;
     }
 }
