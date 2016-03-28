@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "24.0.0 rc1"
+
+    defaultConfig {
+        minSdkVersion 11
+        targetSdkVersion 23
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:design:23.2.1'
+}
+
+String bintrayUser = hasProperty('bintray_user') ? property('bintray_user') : ''
+String bintrayApiKey = hasProperty('bintray_api_key') ? property('bintray_api_key') : ''
+String versionName = hasProperty('version_name') ? property('version_name') : ''
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier "source"
+}
+
+publishing {
+    publications {
+        Bintray(MavenPublication) {
+            groupId 'com.github.wrdlbrnft'
+            artifactId 'gravity-behavior'
+            version versionName
+            artifact(sourceJar)
+            artifact("$buildDir/outputs/aar/GravityBehavior-release.aar")
+        }
+    }
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayApiKey
+    publications = ['Bintray']
+    pkg {
+        repo = 'maven'
+        name = 'GravityBehavior'
+        userOrg = bintrayUser
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/Wrdlbrnft/GravityBehavior'
+        publicDownloadNumbers = true
+        version {
+            name = versionName
+            released = new Date()
+        }
+    }
+}
