@@ -7,7 +7,7 @@ A `CoordinatorLayout.Behavior` which aligns a `View` according to gravity.
 To use the GravityBehavior just add this dependency to your build.gradle:
 
 ```
-compile 'com.github.wrdlbrnft:gravity-behavior:0.1.0.2'
+compile 'com.github.wrdlbrnft:gravity-behavior:0.1.0.3'
 ```
 
 If you are using maven you can add it like this: 
@@ -16,9 +16,11 @@ If you are using maven you can add it like this:
 <dependency>
   <groupId>com.github.wrdlbrnft</groupId>
   <artifactId>gravity-behavior</artifactId>
-  <version>0.1.0.2</version>
+  <version>0.1.0.3</version>
 </dependency>
 ```
+
+---
 
 ## How to use it
 
@@ -72,4 +74,35 @@ protected void onPause() {
     super.onPause();
     mGravityBehavior.stop();
 }
+```
+
+And that's everything you have to do to get `GravityBehavior` to work.
+
+---
+
+## Additional Options
+
+### Smoothing Factor
+
+GravityBehavior internally smooths out sensor values with a very simple filter. The amount of smoothing can be controlled with a smoothing factor which can be modified with a setter:
+
+```java
+mGravityBehavior.setSmoothingFactor(8.0f);
+```
+
+The default smoothing factor is `4.0f` (there is also a public constant in the `GravityBehavior` for that). Increasing the smoothing factor will make the rotation of the `View` smoother, but it will also react more slowly to changes in the orientation of the device. `4.0f` should be the optimal compromise of smoothness and reaction speed for most devices, but you can play around with it a little if you want.
+
+### Base Rotation
+
+GravityBehavior can apply a base rotation to the `View`. The `View` will always be rotated by the base rotation in addition to the rotation applied by GravityBehavior. The `GravityBehavior` exposes a setter for the base rotation:
+
+```java
+mGravityBehavior.setBaseRotation(90.0f);
+```
+
+And `GravityBehavior` also exposes a `Property` for use in an `Animator` so you can easily animate the base rotation value:
+
+```java
+final Animator animator = ObjectAnimator.ofFloat(view, GravityBehavior.BASE_ROTATION, 0.0f, 90.0f);
+animator.start();
 ```
