@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.View;
 
 /**
@@ -15,6 +16,20 @@ import android.view.View;
  * Date: 28/03/16
  */
 public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
+
+    public static final Property<View, Float> BASE_ROTATION = new Property<View, Float>(Float.class, "baseRotation") {
+        @Override
+        public Float get(View view) {
+            final GravityBehavior behavior = GravityBehavior.of(view);
+            return behavior.mSmoothingFactor;
+        }
+
+        @Override
+        public void set(View view, Float value) {
+            final GravityBehavior behavior = GravityBehavior.of(view);
+            behavior.mSmoothingFactor = value;
+        }
+    };
 
     public static final float DEFAULT_SMOOTHING_FACTOR = 4.0f;
 
@@ -84,6 +99,10 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
 
     public void setBaseRotation(float baseRotation) {
         mBaseRotation = baseRotation;
+    }
+
+    public float getBaseRotation() {
+        return mBaseRotation;
     }
 
     public void setSmoothingFactor(float smoothingFactor) {
