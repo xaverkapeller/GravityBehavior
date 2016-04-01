@@ -7,7 +7,7 @@ A `CoordinatorLayout.Behavior` which aligns a `View` according to gravity.
 To use the GravityBehavior just add this dependency to your build.gradle:
 
 ```
-compile 'com.github.wrdlbrnft:gravity-behavior:0.1.0.3'
+compile 'com.github.wrdlbrnft:gravity-behavior:0.1.0.4'
 ```
 
 If you are using maven you can add it like this: 
@@ -16,7 +16,7 @@ If you are using maven you can add it like this:
 <dependency>
   <groupId>com.github.wrdlbrnft</groupId>
   <artifactId>gravity-behavior</artifactId>
-  <version>0.1.0.3</version>
+  <version>0.1.0.4</version>
 </dependency>
 ```
 
