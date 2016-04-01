@@ -16,6 +16,8 @@ import android.view.View;
  */
 public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
 
+    public static final float DEFAULT_SMOOTHING_FACTOR = 4.0f;
+
     public static GravityBehavior of(View view) {
         final CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
         return (GravityBehavior) params.getBehavior();
@@ -23,12 +25,18 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
 
     private final SensorEventListener mListener = new SensorEventListener() {
 
+        private float mX;
+        private float mY;
+
         @Override
         public void onSensorChanged(SensorEvent event) {
-            final float x = event.values[0];
-            final float y = event.values[1];
+            final float newX = event.values[0];
+            final float newY = event.values[1];
 
-            final float angle = (float) -Math.toDegrees(Math.atan2(y, x) - Math.atan2(1.0, 0.0)) + mBaseRotation;
+            mX += (newX - mX) / mSmoothingFactor;
+            mY += (newY - mY) / mSmoothingFactor;
+
+            final float angle = (float) -Math.toDegrees(Math.atan2(mY, mX) - Math.atan2(1.0, 0.0)) + mBaseRotation;
             mView.setRotation(angle);
         }
 
@@ -41,6 +49,7 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
     private final SensorManager mSensorManager;
 
     private float mBaseRotation;
+    private float mSmoothingFactor = DEFAULT_SMOOTHING_FACTOR;
     private View mView;
 
     public GravityBehavior(Context context) {
@@ -75,5 +84,9 @@ public class GravityBehavior extends CoordinatorLayout.Behavior<View> {
 
     public void setBaseRotation(float baseRotation) {
         mBaseRotation = baseRotation;
+    }
+
+    public void setSmoothingFactor(float smoothingFactor) {
+        mSmoothingFactor = smoothingFactor;
     }
 }
