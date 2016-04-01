@@ -20,8 +20,6 @@ If you are using maven you can add it like this:
 </dependency>
 ```
 
----
-
 ## How to use it
 
 You can add the `Behavior` to any `View` which is a direct child of a `CoordinatorLayout`. The library provides a string resource called `gravity_behavior` to simplify this:
@@ -77,8 +75,6 @@ protected void onPause() {
 ```
 
 And that's everything you have to do to get `GravityBehavior` to work.
-
----
 
 ## Additional Options
 
